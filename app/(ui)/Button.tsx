@@ -1,6 +1,10 @@
+"use client";
+
 import { cva, VariantProps } from 'class-variance-authority';
 import { ComponentProps } from 'react';
 import Link from 'next/link';
+
+import { toggleHover } from '../(store)/global';
 
 const buttonStyles = cva("", {
   variants: {
@@ -19,11 +23,13 @@ type ButtonOrLinkProps = ComponentProps<'button'>
 
 interface Props extends ButtonOrLinkProps {};
 
-const Button = ({href, children, customClass, ...props}: Props) => {
+const Button = ({href, children, customClass, onMouseEnter, onMouseLeave, ...props}: Props) => {
   const isLink = typeof href !== 'undefined';
 
   if(isLink){
-    return <Link className={buttonStyles({customClass})} href={href}>{children}</Link>;
+    return <Link className={buttonStyles({customClass})} href={href}>
+      <span onMouseEnter={toggleHover} onMouseLeave={toggleHover}>{children}</span>
+    </Link>;
   }
 
   return <button className={buttonStyles({customClass})} {...props}>{children}</button>;
